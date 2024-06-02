@@ -1,0 +1,10 @@
+.App {
+  text-align: center;
+}
+
+.text-link {
+  text-decoration: none;
+  &:focus, &:visited, &:link, &:active {
+      text-decoration: none;
+  }
+}
