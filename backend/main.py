@@ -46,9 +46,9 @@ async def get_menu_items():
     if response:
         for item in response:
             if item.productName not in items:
-                items[item.productName] = {item.size:item.price}
+                items[item.productName] = {"sizes":{item.size:item.price},"image":item.image,"description":item.description}
             else:
-                items[item.productName][item.size] = item.price
+                items[item.productName]["sizes"][item.size] = item.price
     return items
 
 @app.delete("/product", response_model=Product)
@@ -63,11 +63,10 @@ async def delete_given_product(productName, size):
     raise HTTPException(404, f"No product found")
 
 @app.delete("/order", response_model=Order)
-async def delete_given_order(products,customer,orderTime):
+async def delete_given_order(products,customer):
     order = {
         "products": products,
         "customer": customer,
-        "orderTime": orderTime
     }
     response = await delete_order(order)
     if response:
@@ -98,7 +97,7 @@ async def delete_given_topping(toppingName):
     raise HTTPException(404, f"No topping found")
 
 @app.get("/products")
-async def get_products(productName:Optional[str] = "",productPrice:Optional[float] = 0,size:Optional[str] = ""):
+async def get_products(productName:Optional[str] = "",productPrice:Optional[float] = 0,size:Optional[str] = "",description:Optional[str] = "",image:Optional[str] = ""):
     product = {}
     if(productName != ""):
         product["productName"] = productName
@@ -106,13 +105,17 @@ async def get_products(productName:Optional[str] = "",productPrice:Optional[floa
         product["price"] = productPrice
     if(size != ""):
         product["size"] = size
+    if(description != ""):
+        product["description"] = description
+    if(image != ""):
+        product["image"] = image
     response = await get_all_products(product)
     if response:
         return response
     raise HTTPException(404, f"No products found")
 
 @app.get("/product")
-async def get_product(productName:Optional[str] = "",productPrice:Optional[float] = 0,size:Optional[str] = ""):
+async def get_product(productName:Optional[str] = "",productPrice:Optional[float] = 0,size:Optional[str] = "",description:Optional[str] = "",image:Optional[str] = ""):
     product = {}
     if(productName != ""):
         product["productName"] = productName
@@ -120,6 +123,10 @@ async def get_product(productName:Optional[str] = "",productPrice:Optional[float
         product["price"] = productPrice
     if(size != ""):
         product["size"] = size
+    if(description != ""):
+        product["description"] = description
+    if(image != ""):
+        product["image"] = image
     response = await get_one_product(product)
     if response:
         return response
@@ -226,18 +233,24 @@ async def insert_products(products:List[dict]):
             break
         if "size" not in product:
             break
-        if len(product) == 3:
+        if "description" not in product:
+            break
+        if "image" not in product:
+            break
+        if len(product) == 5:
             break
         response = await create_product(product)
         if not response:
             raise HTTPException(404, f"Product not inserted")
 
 @app.post("/product", response_model=Product)
-async def insert_product(productName,productPrice,size):
+async def insert_product(productName,productPrice,size,description,image):
     product = {
         "price": float(productPrice),
         "productName": productName,
-        "size": size
+        "size": size,
+        "description": description,
+        "image": image,
     }
     response = await create_product(product)
     if response:
@@ -245,16 +258,20 @@ async def insert_product(productName,productPrice,size):
     raise HTTPException(404, f"Product named '{productName}' at ${productPrice} not found")
 
 @app.put("/product", response_model=Product)
-async def update_given_product(productName,price,size,newProductName,newProductPrice,newSize):
+async def update_given_product(productName,price,size,description,image,newProductName,newProductPrice,newSize,newDescription,newImage):
     product = { 
         "price": price,
         "productName": productName,
-        "size": size
+        "size": size,
+        "description": description,
+        "image": image,
     }
     newProduct = {
         "price": float(newProductPrice),
         "productName": newProductName,
-        "size": newSize
+        "size": newSize,
+        "description": newDescription,
+        "image": newImage,
     }
     response = await update_product(product,newProduct)
     if response:

@@ -25,11 +25,11 @@ export default function Menu(props){
                 return (
                     <div className="col-md-6 col-lg-4" key={items}>
                         <Card>
-                            {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+                            <Card.Img variant="top" src={`${process.env.PUBLIC_URL}/images/` + menuItems[items]["image"]} alt={items}/>
                             <Card.Body>
                                 <Card.Title>{items}</Card.Title>
                                 <Card.Text>
-                                    button text
+                                    {menuItems[items]["description"]}
                                 </Card.Text>
                                 <ItemCard menuItems={menuItems} items={items}/>
                             </Card.Body>
