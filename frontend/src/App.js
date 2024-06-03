@@ -29,6 +29,7 @@ export default function App() {
   const [password, setPassword] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
+  const [cart, setCart] = useState([])
   
   useEffect(() => {
     const storageEmail = localStorage.getItem("email")
@@ -47,6 +48,10 @@ export default function App() {
     if(storageLastName){
       setLastName(JSON.parse(storageLastName))
     }
+    // const storageCart = localStorage.getItem("cart")
+    // if(storageCart){
+    //   setCart(JSON.parse(storageCart))
+    // }
   }, [])
 
   useEffect(() => {
@@ -54,21 +59,21 @@ export default function App() {
     localStorage.setItem("password", JSON.stringify(password))
     localStorage.setItem("firstName", JSON.stringify(firstName))
     localStorage.setItem("lastName", JSON.stringify(lastName))
+    // localStorage.setItem("cart", JSON.stringify(cart))
   })
-
 
   return (
     <BrowserRouter>
-      <NavBar email={email} password={password} firstName={firstName} lastName={lastName} setEmail={setEmail} setPassword={setPassword} setFirstName={setFirstName} setLastName={setLastName}/>
+      <NavBar cart={cart} email={email} password={password} firstName={firstName} lastName={lastName} setEmail={setEmail} setPassword={setPassword} setFirstName={setFirstName} setLastName={setLastName}/>
       <Routes>
         <Route exact path="/" element={<Home email={email} password={password} firstName={firstName} lastName={lastName}/>}/>
         <Route path="/about" element={<About email={email} password={password} firstName={firstName} lastName={lastName}/>}/>
-        <Route path="/menu" element={<Menu email={email} password={password} firstName={firstName} lastName={lastName}/>}/>
+        <Route path="/menu" element={<Menu email={email} password={password} firstName={firstName} lastName={lastName} cart={cart} setCart={setCart}/>}/>
         <Route path="/order" element={<Order email={email} password={password} firstName={firstName} lastName={lastName}/>}/>
         <Route path="/socials" element={<Socials email={email} password={password} firstName={firstName} lastName={lastName}/>}/>
         <Route path="/login" element={<Login email={email} password={password} firstName={firstName} lastName={lastName} setEmail={setEmail} setPassword={setPassword} setFirstName={setFirstName} setLastName={setLastName}/>}/>
         <Route path="/signup" element={<Signup email={email} password={password} firstName={firstName} lastName={lastName} setEmail={setEmail} setPassword={setPassword} setFirstName={setFirstName} setLastName={setLastName}/>}/>
-        <Route path="/cart" element={<Cart email={email} password={password} firstName={firstName} lastName={lastName}/>}/>
+        <Route path="/cart" element={<Cart email={email} password={password} firstName={firstName} lastName={lastName} cart={cart} setCart={setCart}/>}/>
       </Routes>
     </BrowserRouter>
   );

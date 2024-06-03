@@ -60,7 +60,7 @@ export default function Cart(props){
     return (
         <div className="row g-5 w-50 mx-auto">
             {/* products */}
-            <Products/>
+            <Products cart={props.cart} setCart={props.setCart}/>
             {/* was-validated should be activated after submit button is clicked */}
             <div className="col-md-7 col-lg-8">
                 <h4 className="mb-3">Order Information</h4>

@@ -10,6 +10,13 @@ export default function ItemCard(props){
         var itemSize = items
         var itemPrice = props.menuItems[props.items]["sizes"][items]
         console.log(itemName + " " + itemSize + " " + itemPrice);
+        if(props.cart.length === 0){
+            console.log("return true")
+            props.setCart([{"productName":itemName,"size":itemSize,"price":itemPrice}])
+        }else{
+            console.log("return false")
+            props.setCart([...props.cart,{"productName":itemName,"size":itemSize,"price":itemPrice}])
+        }
     }
 
     const handleChange = event => {

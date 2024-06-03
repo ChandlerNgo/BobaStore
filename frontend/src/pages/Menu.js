@@ -5,9 +5,9 @@ import ItemCard from '../components/ItemCard';
 
 export default function Menu(props){
     const [menuItems,setMenuItems] = useState({})
-
+    const port = process.env.PORT || 8000
     const getMenuItems = () => {
-        axios.get('http://localhost:8000/menu-items')
+        axios.get(`http://localhost:${port}/menu-items`)
         .then(res => {
             setMenuItems(res.data)
         });
@@ -20,7 +20,7 @@ export default function Menu(props){
     return (
         <div className="row g-5 w-50 mx-auto">
             {/* Menu */}
-            {/* {JSON.stringify(menuItems)} */}
+            {/* {props.cart} */}
             {Object.keys(menuItems).map((items) => {
                 return (
                     <div className="col-md-6 col-lg-4" key={items}>
@@ -31,7 +31,7 @@ export default function Menu(props){
                                 <Card.Text>
                                     {menuItems[items]["description"]}
                                 </Card.Text>
-                                <ItemCard menuItems={menuItems} items={items}/>
+                                <ItemCard menuItems={menuItems} items={items} cart={props.cart} setCart={props.setCart}/>
                             </Card.Body>
                         </Card>
                     </div>

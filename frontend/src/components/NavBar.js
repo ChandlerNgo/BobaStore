@@ -45,7 +45,7 @@ export default function NavBar(props){
                     {login}
                     {signout}
                     {welcome}
-                    <li className="nav-link"><NavLink to="/cart" className="text-link">{cartIcon} {1}</NavLink></li>
+                    <li className="nav-link"><NavLink to="/cart" className="text-link">{cartIcon} {Object.keys(props.cart).length}</NavLink></li>
                 </ul>
             </header>
         </div>
