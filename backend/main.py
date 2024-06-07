@@ -237,7 +237,7 @@ async def insert_products(products:List[dict]):
             break
         if "image" not in product:
             break
-        if len(product) == 5:
+        if len(product) != 5:
             break
         response = await create_product(product)
         if not response:
@@ -333,14 +333,14 @@ async def update_given_topping(price,toppingName,newPrice,newToppingName):
 async def insert_toppings(toppings:List[dict]):
     for topping in toppings:
         if "price" not in topping:
-            break
+            raise HTTPException(404, f"price doesnt exist")
         if "toppingName" not in topping:
-            break
-        if len(topping) == 2:
-            break
+            raise HTTPException(404, f"toppingName doesnt exist")
+        if len(topping) != 2:
+            raise HTTPException(404, f"missing/extra key")
         response = await create_topping(topping)
         if not response:
-            raise HTTPException(404, f"Topping not inserted")
+            raise HTTPException(404, f"response doesnt exist")
 
 @app.post("/topping", response_model=Topping)
 async def insert_topping(toppingName,toppingPrice):

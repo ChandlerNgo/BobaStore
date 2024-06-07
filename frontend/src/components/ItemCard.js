@@ -1,23 +1,20 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import React,{useState} from 'react';
+import { NavLink,useNavigate } from "react-router-dom";
 
 export default function ItemCard(props){
     const [items,setItems] = useState(Object.keys(props.menuItems[props.items]["sizes"])[0])
+    const navigate = useNavigate()
     const handleSubmit = (event) => {
         event.preventDefault();
         var itemName = props.items
         var itemSize = items
         var itemPrice = props.menuItems[props.items]["sizes"][items]
         console.log(itemName + " " + itemSize + " " + itemPrice);
-        if(props.cart.length === 0){
-            console.log("return true")
-            props.setCart([{"productName":itemName,"size":itemSize,"price":itemPrice}])
-        }else{
-            console.log("return false")
-            props.setCart([...props.cart,{"productName":itemName,"size":itemSize,"price":itemPrice}])
-        }
-    }
+        props.setItem({"productName":itemName,"size":itemSize,"price":itemPrice})
+        navigate('/toppings')
+    };
 
     const handleChange = event => {
         setItems(event.target.value);
@@ -32,7 +29,7 @@ export default function ItemCard(props){
                     )
                 })}
             </Form.Select>
-            <Button className="col-md-6" variant="success" type="submit">Add to Cart</Button>
+            <NavLink to='/toppings' className="col-md-6" variant="success" type="submit"><Button variant="success" type="submit" onClick={handleSubmit}>Add to Cart</Button></NavLink>
         </Form>
     )
 }

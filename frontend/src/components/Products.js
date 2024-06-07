@@ -1,13 +1,18 @@
 import React from "react";
+
 export default function Products(props) {
-    console.log(props.cart)
     function getCartTotal(){
         var total = 0
         for(let i = 0; i < props.cart.length;i++){
             total += props.cart[i]["price"]
+            var toppings = Object.keys(props.cart[i]["toppings"])
+            for(let j = 0; j < toppings.length;j++){
+                total += props.cart[i]["toppings"][toppings[j]]
+            }
         }
         return total.toFixed(2)
     }
+
     return (
         <div className="col-md-5 col-lg-4 order-md-last">
             <h4 className="d-flex justify-content-between align-items-center mb-3">
@@ -19,13 +24,38 @@ export default function Products(props) {
                     return (
                         <li className="list-group-item d-flex justify-content-between lh-sm">
                             <div>
-                                <h6 className="my-0">{props.cart[i]["productName"]}</h6>
-                                <small className="text-body-secondary">{props.cart[i]["size"]} {props.cart[i]["productName"]}</small>
+                                <h6 className="my-0">
+                                    {props.cart[i]['size']} {props.cart[i]['productName']}
+                                </h6>
+                                {Object.keys(props.cart[i]["toppings"]).map((topping,j) => {
+                                    return (
+                                        <ul key={j} className="list-group d-flex justify-content-between">
+                                            <li className="list-group d-flex justify-content-between">
+                                                <small className="text-body-secondary">1x {topping}</small>
+                                            </li>
+                                        </ul>
+                                    )
+                                })}
                             </div>
-                            <span className="text-body-secondary">${props.cart[i]["price"]}</span>
+                            <div>
+                                <small className="text-body-secondary">${props.cart[i]['price']}</small>
+                                {Object.keys(props.cart[i]["toppings"]).map((topping,j) => {
+                                    return (
+                                        <ul key={j} className="list-group d-flex justify-content-between">
+                                            <li className="list-group d-flex justify-content-between">
+                                                <small className="text-body-secondary">${props.cart[i]["toppings"][topping]}</small>
+                                            </li>
+                                        </ul>
+                                    )
+                                })}
+                            </div>
                         </li>
                     )
                 })}
+                <li className="list-group-item d-flex justify-content-between">
+                    <span>Total (USD)</span>
+                    <strong>${getCartTotal()}</strong>
+                </li>
                 {/* <li className="list-group-item d-flex justify-content-between bg-body-tertiary">
                     <div className="text-success">
                         <h6 className="my-0">Promo code</h6>
@@ -33,10 +63,6 @@ export default function Products(props) {
                     </div>
                     <span className="text-success">−$5</span>
                 </li> */}
-                <li className="list-group-item d-flex justify-content-between">
-                    <span>Total (USD)</span>
-                    <strong>${getCartTotal()}</strong>
-                </li>
             </ul>
             <form className="card p-2">
                 <div className="input-group">
