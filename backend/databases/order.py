@@ -1,8 +1,10 @@
 from models.order import Order
-
 import motor.motor_asyncio
+import os
 
-client = motor.motor_asyncio.AsyncIOMotorClient("mongodb://localhost:27017")
+DB_URL = os.environ.get('DB_URL')
+
+client = motor.motor_asyncio.AsyncIOMotorClient(DB_URL)
 
 database = client["boba_store"]
 

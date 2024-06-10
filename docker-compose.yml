@@ -1,0 +1,22 @@
+services:
+  frontend:
+    build: ./frontend 
+    ports:
+      - 3000:3000
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    # volumes:
+    #   - .:/app
+    environment:
+      DB_URL: mongodb://database/BobaStore
+  database:
+    image: mongo:5
+    ports:
+      - "27017:27017"
+    volumes:
+      - BobaStore:/data/database
+volumes:
+  BobaStore:
